@@ -2,9 +2,11 @@
 ## Python course final project, 2018
 ### Zvi Baratz, Amit Koren and Omer Granoviter
 
-In our lab, we study the neurovascular response in mice _in vivo_. To that end, we need to measure blood flow, and changes in it, during imaging sessions. Up till recently, measuring blood flow required illuminating and scanning the mouse’s brain in a very specific pattern. This method works and has been validated on multiple occasions, but it very much limits the amount of information one can extract from these imaging sessions **besides** blood flow.
+In our lab (Pablo Blinder's), we study the neurovascular response in mice _in vivo_. To that end, we need to measure blood flow, and changes in it, during imaging sessions. Up till recently, measuring blood flow required illuminating and scanning the mouse’s brain in a very specific pattern. This method works and has been validated on multiple occasions, but it very much limits the amount of information one can extract from these imaging sessions **besides** blood flow. 
 
 In 2014 an Italian group published [this paper](https://www.nature.com/articles/srep07341), introducing a new method to measure blood flow from standard imaging sessions. Its input is a time lapse movie containing stained vasculature, and the regions of interest with vessels you wish to measure. A few other parameters, like the frame rate of the movie, are also required. Its output is the blood flow rate over time in each region of interest. Recently we received the original code used in the article, with purpose in mind to use it for our own research, but unfortunately it’s absolutely horrifying. The code is extremely low quality, written in a very unclear manner with zero thought of performance and reusability.
+
+![Stained vasculature example](bloodflow.gif)
 
 Assuming the code is doing its job, albeit poorly, we want students in our lab to use this algorithm to calculate blood flow without writing more code. To that end we've written a GUI into which you load an existing time lapse movie of a recording you've made, enabling you to choose the regions of interest in that image, then passing it to the algorithm and finally displaying the result. This GUI is already written and working, but we'd like it further polished, especially in the back-end side of things - saving the results of the analysis is currently improperly handled, and we'd like to fix that.
 

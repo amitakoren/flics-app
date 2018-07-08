@@ -24,4 +24,4 @@ The actual application is run using a PyQT GUI, written by project students from
 
 
 ## More information
-The work can be done asynchronously, meaning that assuming you're cooperating properly using Git, each of you can work independently on its own part of the project. We'll meet after you start working and understand the basic requirements of this project.
+The work can be done asynchronously, meaning that assuming you're cooperating properly using Git, each of you can work independently on his\her own part of the project.

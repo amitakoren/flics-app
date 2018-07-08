@@ -5,4 +5,4 @@ Based on [this](https://www.nature.com/articles/srep07341) article.
 
 Raw data used in the article can be found [here](https://www.dropbox.com/s/y1o652z1djpcjz6/f03_x5_4p36fps-Ch1.tif?dl=0).
 
-Full explanation of the project's goals can be found in `project.md`.
+Full explanation of the project's goals can be found in [`project.md`](project.md).

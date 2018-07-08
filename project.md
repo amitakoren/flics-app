@@ -15,7 +15,7 @@ The first thing you should do is read the paper. It's technical, but don't let t
 
 ## Subgroups division
 ### Code upgrade - Zvi
-The code is `flics/flics.py`. The first thing to do is to run it and verify that the results are similar to the ones in the article. Save these results and regard them as your "ground truth", since after you start refactoring you'll have to double check that you haven't changed the actual alogrithm's output.
+The code is [`flics/flics.py`](flics/flics.py). The first thing to do is to run it and verify that the results are similar to the ones in the article. Save these results and regard them as your "ground truth", since after you start refactoring you'll have to double check that you haven't changed the actual alogrithm's output.
 
 Then starts the actual refactoring process. I trust in you to make wise decisions during your work, so I'll leave out the specific details on what exactly should be changed. Also, the code is in such bad shape that _any_ change you make will probably be a good one.
 

@@ -238,7 +238,7 @@ class Imageobj(QGraphicsView):
                     self.updateViewer()
             self.setDragMode(QGraphicsView.NoDrag)
             self.rightMouseButtonReleased.emit(scenePos.x(), scenePos.y())
-        self.scene.addItem(self.group)
+        # self.scene.addItem(self.group)
         self.updateViewer()
         
     def mouseDoubleClickEvent(self, event):

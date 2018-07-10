@@ -26,8 +26,6 @@ from imageObj4 import (Imageobj)
 import os 
 import math
 
-import details_window
-
 
 class window(QMainWindow):
     
@@ -67,7 +65,7 @@ class window(QMainWindow):
         undoIcon =  os.path.join(self.fileDir, 'icon/undo.png')
         readmeIcon = os.path.join(self.fileDir, 'icon/readme.png')
         primaryIcon = os.path.join(self.fileDir, 'icon/database.png')
-        
+
         fileMenu = menubar.addMenu('File')
         b_newfile= QAction(QIcon(fileIcon),'Open new file',self)
         b_newfile.triggered.connect(self.open_newfile)
@@ -108,8 +106,7 @@ class window(QMainWindow):
         #b_edit_vector.triggered.connect(self.edit_v)
         self.show_roi_info = QAction("Show ROI's Properties",self)
         #self.show_roi_info.setDisabled(True)
-        self.show_roi_info.triggered.connect(self.rois_details)
-    
+
         editMenu.addAction(self.show_roi_info)
         editMenu.addAction(self.b_undo)
         editMenu.addAction(self.add_roi)
@@ -202,18 +199,6 @@ class window(QMainWindow):
         self.setWindowTitle("Create Data Base")
         self.showMaximized()
         self.show()
-        
-        
-        "need to build this window, so the user will able to see simultaneously the db"
-    def rois_details(self):
-        global df,new_win
-        #print (df)
-        new_win = details_window.details_win(df)
-        new_win.show()
-        #new_win = welcom_win.welcom()
-        #new_win.show()
-        #roi_detaile = details_window.details_window()
-        #roi_detaile.show()
         
     def closeEvent(self,event):
         """Generate 'question' dialog on clicking 'X' button in title bar.

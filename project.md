@@ -15,13 +15,14 @@ The first thing you should do is read the paper. It's technical, but don't let t
 
 ## Subgroups division
 ### Code upgrade - Zvi
-The code is [`flics/flics.py`](flics/flics.py). The first thing to do is to run it and verify that the results are similar to the ones in the article. Save these results and regard them as your "ground truth", since after you start refactoring you'll have to double check that you haven't changed the actual alogrithm's output.
+The code is [`flics_data/flics.py`](flics_data/flics.py). The first thing to do is to run it and verify that the results are similar to the ones in the article. Save these results and regard them as your "ground truth", since after you start refactoring you'll have to double check that you haven't changed the actual alogrithm's output.
 
 Then starts the actual refactoring process. I trust in you to make wise decisions during your work, so I'll leave out the specific details on what exactly should be changed. Also, the code is in such bad shape that _any_ change you make will probably be a good one.
 
-### GUI upgrade - Omer and Amit 
-The actual application is run using a PyQT GUI, written by project students from our lab. The GUI needs to handle both inputs and outputs - and you'll find it's already doing a decent job (it wasn't written by Italians). The main quirk is the way we save and load data. The data format should be general enough to be read from other programs, so `.csv` is good, but `pickle` is not. Another important task is the documentation of the entire software - how to install, how to run, what do the parameters mean, etc.
+### GUI upgrade - Amit 
+The actual application is run using a PyQT GUI, written by project students from our lab. The GUI needs to handle both inputs and outputs, meaning it should be able to process a TIFF stack and run the analysis on it. Currenlty, the input part mostly works, and your first task should be a "clean-up", i.e. verifying that each function works and document it. Then comes the I/O part - the GUI has to output the ROIs in a specific format that `flics.py` should read. You have to make sure you understand the current format (it's in the `.json` files) and see that whoever's working on the code knows it. Another important task is the documentation of the entire software - how to install, how to run, what do the parameters mean, etc. 
 
+This task will probably take the longest, so once Zvi and Omer are done with theirs you should ask for their assistance. If you'll all work with version control and short, precise commits, this shouldn't be an issue.
 
-## More information
-The work can be done asynchronously, meaning that assuming you're cooperating properly using Git, each of you can work independently on his\her own part of the project.
+### Global fit - Omer
+The output of the cross-correlation has to be fitted (globally) in order to receive the final measurement values. We've received the result of the fit the original group did, and so the first goal is to receive their answer with our code, since they conduct the fit with a special statistics software which is unavailable for us. Once the results fit their original result, we can try working with our own data.

@@ -45,13 +45,14 @@ class MainWindow(QMainWindow):
             icon=get_icon('new_file'),
             text='New File',
             statusTip='Open a new file...',
+            shortcut='Ctrl+N',
             triggered=self.create_new_file,
         )
 
         self.open_file_action = QAction(
             parent=self,
             text='Open File',
-            statusTip='Open a new file...',
+            statusTip='Open file...',
             triggered=self.open_file,
         )
 
@@ -60,6 +61,7 @@ class MainWindow(QMainWindow):
             icon=get_icon('save'),
             text='Save',
             statusTip='Save to file...',
+            shortcut='Ctrl+S',
             triggered=self.df_save,
         )
 
@@ -67,6 +69,7 @@ class MainWindow(QMainWindow):
             parent=self,
             icon=get_icon('restart'),
             text='Restart',
+            shortcut='Ctrl+R',
             triggered=self.pop_save_changes_message,
         )
 
@@ -160,23 +163,25 @@ class MainWindow(QMainWindow):
         self.approve_roi_action.setEnabled(False)
 
     def create_menus(self):
-        """menu bar part
-         The menu bar as three main options:
-            (1) file:
-                (1.1) open new file
-                (1.2) open exist file
-                (1.3) save
-                (1.4) restart
+        """
+        Menu Bar:
+            (1) File:
+                (1.1) Open New File
+                (1.2) Open Existing File
+                (1.3) Save
+                (1.4) Restart
                 (1.5) Quit
             (2) Edit:
-                (2.1) undo last action, let the user the option to cancel
-                roi/vector mark insteed of approve
-                (2.2) add roi, if the user want to add roi while open an exist
-                db file, make the "select roi" button able
-                (2.3) delete roi, when roi is selected from list
-
-
+                (2.1) Undo last action, give user option to cancel
+                      ROI/vector mark instead of approve
+                (2.2) Add roi, if the user wants to add roi while existing
+                      db file is open, enable "Select ROI" button
+                (2.3) Delete ROI when ROI is selected from list
+            (3) Help:
+                (3.1) Search bar for help
+                (3.2) READ ME
         """
+
         # File menu
         self.file_menu = self.menuBar().addMenu('File')
         self.file_menu.addAction(self.new_file_action)
@@ -282,10 +287,10 @@ class MainWindow(QMainWindow):
         return d
 
     def closeEvent(self, event):
-        """Generate 'question' dialog on clicking 'X' button in title bar.
-
-        Reimplement the closeEvent() event handler to include a 'Question'
-        dialog with options on how to proceed - Save, Close, Cancel buttons
+        """
+        Generates 'Question' dialog when 'X' button in title bar is clicked.
+        :param event: closeEvent()
+        :return: 'Question' dialog with options on how to proceed - Save, Close, Cancel buttons
         """
         reply = QMessageBox.question(
             self, "Message",
@@ -304,9 +309,10 @@ class MainWindow(QMainWindow):
             self.df_save()
 
     def keyPressEvent(self, event):
-        """Close application from escape key.
-
-        results in QMessageBox dialog from closeEvent, good but how/why?
+        """
+        Pops up closing GUI dialog by clicking on escape key
+        :param event: escape key click
+        :return: close app dialog
         """
         if event.key() == Qt.Key_Escape:
             self.close()
@@ -383,6 +389,11 @@ class MainWindow(QMainWindow):
             os.makedirs(file_data['results_dir'])
 
     def create_new_file(self, path: str = ''):
+        """
+        Creates new file
+        :param path: New file location
+        :return: TIF file which has not been previously marked with ROIs
+        """
 
         self.prep_new_or_open(path)
 
@@ -404,28 +415,35 @@ class MainWindow(QMainWindow):
         raise FileNotFoundError('Could not find required files!')
 
     def open_file(self):
+        """
+        Opens TIF file
+        :return: TIF file with possible existing ROIs
+        """
+        if self.prep_new_or_open():
+            global df, file_metadata, file_data
 
-        self.prep_new_or_open()
-        global df, file_metadata, file_data
-
-        if self.check_load_reqirements():
-            with open(file_data['metadata_path'], 'r') as fp:
-                file_metadata = json.load(fp)
-            self.collect_metadata()
-            image = QImage(file_data['im2show_path'])
-            self.image_view.setImage(image)
-            df = pd.read_json(file_data['db_path'])
-            items_list = [
-                'ROI ' + str(i) for i in range(1,
-                                               df.index.max() + 2)
-            ]
-            self.list_roi.addItems(items_list)
-            rois_pos_list = list(df['Position'])
-            self.image_view.create_fromDB(rois_pos_list, "rois")
-            vec_pos_list = list(df['gamma_position'])
-            self.image_view.create_fromDB(vec_pos_list, "vector")
+            if self.check_load_reqirements():
+                with open(file_data['metadata_path'], 'r') as fp:
+                    file_metadata = json.load(fp)
+                self.collect_metadata()
+                image = QImage(file_data['im2show_path'])
+                self.image_view.setImage(image)
+                df = pd.read_json(file_data['db_path'])
+                items_list = [
+                    'ROI ' + str(i) for i in range(1,
+                                                   df.index.max() + 2)
+                ]
+                self.list_roi.addItems(items_list)
+                rois_pos_list = list(df['Position'])
+                self.image_view.create_fromDB(rois_pos_list, "rois")
+                vec_pos_list = list(df['gamma_position'])
+                self.image_view.create_fromDB(vec_pos_list, "vector")
 
     def save_rois(self):
+        """
+        Saves existing ROIs on TIF file
+        :return: TIF file with chosen ROIs
+        """
         global file_data
         print("done edit")
         self.fline_text.setEnabled(False)
@@ -460,6 +478,10 @@ class MainWindow(QMainWindow):
         self.save_button.setEnabled(True)
 
     def select_roi(self):
+        """
+        Gives user option to drag mouse and select ROI
+        :return: ROI
+        """
         if self.image_view.hasImage():
             self.image_view.helper_bool2 = False
             self.image_view.helper_bool = True
@@ -549,6 +571,10 @@ class MainWindow(QMainWindow):
         self.approve_roi()
 
     def undo(self):
+        """
+        Undo one action
+        :return: State of App before last action
+        """
         self.image_view.helper_bool2 = False
         self.image_view.helper_bool = False
         self.approve_roi_action.setEnabled(False)
@@ -561,16 +587,21 @@ class MainWindow(QMainWindow):
         self.select_roi_action.setEnabled(True)
 
     def df_save(self):
-        file_name = file_data["name"]
-        path = file_data["path"]
-        db_path = file_data["db_path"]
-        for i in range(len(df.index)):
-            df.at[i, "file_name"] = file_name
-            df.at[i, "path"] = path
+        """
+        Saves changes to file
+        :return: File saved
+        """
+        if len(file_data) != 0:
+            file_name = file_data["name"]
+            path = file_data["path"]
+            db_path = file_data["db_path"]
+            for i in range(len(df.index)):
+                df.at[i, "file_name"] = file_name
+                df.at[i, "path"] = path
 
-        df.to_json(db_path)
-        print('db saved at path:')
-        print(db_path)
+            df.to_json(db_path)
+            print('db saved at path:')
+            print(db_path)
 
     def itemD_clicked(self, item):
         self.b_delet.setDisabled(False)

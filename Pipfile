@@ -4,8 +4,19 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+pylint = "*"
 
 [packages]
+pillow = "*"
+numpy = "*"
+scipy = "*"
+flics = "*"
+"pyqt5" = "*"
+tifffile = "*"
+pandas = "*"
+"autopep8" = "*"
+"flake8" = "*"
+yapf = "*"
 
 [requires]
 python_version = "3.6"
